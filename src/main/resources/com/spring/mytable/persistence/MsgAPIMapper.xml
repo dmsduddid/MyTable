@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    <mapper namespace="com.spring.mytable.persistence.MsgAPIMapper">
+    	<select id = "selectMsgAPIInfo" resultType ="com.spring.mytable.domain.api.MsgApiDTO">
+    		SELECT #{customer_id} AS customer_id
+    				,(SELECT name FROM member WHERE user_id = #{customer_id}) AS username
+    				,(SELECT phone FROM member WHERE user_id = #{customer_id}) AS phone
+    				,(SELECT business_name FROM register WHERE customer_id = #{customer_id}) AS storename
+    				FROM dual
+    	</select>
+    	
+    </mapper>

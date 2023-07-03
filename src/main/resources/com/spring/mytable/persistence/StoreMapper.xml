@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    <mapper namespace="com.spring.mytable.persistence.StoreMapper">
+    	<insert id="uploadStore">
+    		INSERT INTO business
+    				VALUES( #{business_no}
+    						, #{business_name}
+    						, #{owner_id}
+    						, #{postcode}
+    						, #{address}
+    						, #{detailAddress})
+    	</insert>
+    	
+    	<update id="updateConfirm">
+    		UPDATE owner 
+    			SET confirm_yn = 'Y'
+    			WHERE owner_id = #{owner_id}
+    	</update>
+    	
+    	<insert id="uploadStoreList">
+    		<selectKey keyProperty="storelist_no" order="BEFORE" resultType = "int">
+    			SELECT store_seq_no.nextval FROM dual
+    		</selectKey>
+    		<![CDATA[
+	  		    INSERT
+	  			WHEN business_no = #{business_no} THEN
+	  			INTO storelist
+	  			VALUES (#{store_seq_no}
+	  					, business_no
+	  					, business_name
+	  					, address
+	  					, null)
+	  			(SELECT business_no
+	  					, business_name
+	  					, address
+	  					FROM business)
+	  		]]>
+    	</insert>
+    	
+    	<select id = "selectList" resultType = "com.spring.mytable.domain.StoreDTO">
+    		SELECT * FROM storelist 
+    				ORDER BY storelist_no DESC <!-- WHERE address = #{address} -->
+    	</select>
+    	
+    	<!--페이징-->
+    	<select id = "selectListByPaging" resultType = "com.spring.mytable.domain.StoreDTO">
+    		<![CDATA[
+    			SELECT * FROM(
+    				SELECT 
+	    				ROWNUM rn,
+	    				business_no,
+	    				business_name,
+	    				location,
+	    				img
+	    				FROM storelist
+	    				WHERE ROWNUM <= (#{pageNum} * #{amount})
+	    				ORDER BY storelist_no DESC
+	    				)
+    			WHERE rn > ((#{pageNum} -1) * #{amount})			
+    		]]>
+    	</select>
+    	
+    	<select id = "selectTotalCount" resultType = "double">
+    		<![CDATA[
+				SELECT count(*) FROM storelist
+		    ]]>
+    	</select>
+    	
+    	<select id = "selectBusinessList" resultType = "com.spring.mytable.domain.StoreDTO">
+    		SELECT * FROM business 
+    				WHERE owner_id = #{owner_id}
+    	</select>
+    		
+    	<insert id="uploadFile">
+    		<selectKey keyProperty="business_info_no" order="BEFORE" resultType = "int">
+    			SELECT business_info_no.nextval FROM dual
+    		</selectKey>
+	    		INSERT INTO business_info
+	    				VALUES( #{business_info_no}
+	    						, #{business_no}
+	    						, #{business_name}
+	    						, #{business_info}
+	    						, #{business_info_img}
+	    						, default)
+    	</insert>
+    	
+    	<select id = "selectImgASCList" resultType = "com.spring.mytable.domain.StoreUploadDTO">
+    		<![CDATA[
+	    		SELECT * FROM(
+		    		SELECT * FROM business_info
+		    				WHERE business_no = #{business_no}
+		    				ORDER BY business_info_no
+	    		)
+	    		WHERE ROWNUM <= 3
+    		]]>
+    	</select>
+    	<select id = "selectImgDESCList" resultType = "com.spring.mytable.domain.StoreUploadDTO">
+    		<![CDATA[
+	    		SELECT * FROM(
+		    		SELECT * FROM business_info
+		    				WHERE business_no = #{business_no}
+		    				ORDER BY business_info_no desc
+	    		)
+	    		WHERE ROWNUM <= (#{cnt}-3)
+	    		ORDER BY business_info_no
+    		]]>
+    	</select>
+    	<select id = "selectStoreList" resultType = "com.spring.mytable.domain.StoreUploadDTO">
+    		<![CDATA[
+	    		SELECT * FROM business_info
+	    			WHERE business_no = #{business_no}
+	    			ORDER BY business_info_no
+    		]]>
+    	</select>
+    	
+    	
+    	<select id = "selectCnt" resultType = "int">
+    		SELECT COUNT(*) FROM business_info
+    				WHERE business_no = #{business_no}
+    				
+    	</select>
+    	
+    	<update id="updateMainImg">
+    		UPDATE storelist 
+    			SET img = (SELECT business_info_img FROM business_info
+    						WHERE business_no = #{business_no}
+    						AND represent_yn = 1)
+    						WHERE business_no = #{business_no}
+    	</update>
+    	
+    	<update id="updateRepresent_Y">
+    		UPDATE business_info
+    			SET represent_yn = 1
+    			WHERE business_info_no=#{business_info_no}
+    	</update>
+    	
+     	<update id="updateRepresent_N">
+    		UPDATE business_info
+    			SET represent_yn = 0
+    			WHERE business_no=#{business_no}
+    	</update> 
+    	
+    	
+    	<select id = "selectRepresentCnt" resultType = "int">
+    		SELECT COUNT(*) FROM business_info
+    				WHERE business_no=#{business_no}
+    				AND represent_yn = 1
+    	</select>
+    	
+    	<select id = "selectBusinessInfo" resultType = "com.spring.mytable.domain.StoreUploadDTO">
+    		SELECT * FROM business_info
+    				WHERE business_no=#{business_no}
+    	</select>
+    	
+    	<select id = "checkBusinessNo" resultType = "int">
+    		<![CDATA[
+	    		SELECT COUNT(*) FROM business
+	    			WHERE business_no=#{business_no}
+    		]]>
+    	</select>
+    	
+    	<delete id = "deleteBusinessInfo">
+    		<![CDATA[
+	    		DELETE FROM business_info
+	    			WHERE business_info_no=#{business_info_no} 
+    		]]>
+    	</delete>
+    	
+    	
+    </mapper>

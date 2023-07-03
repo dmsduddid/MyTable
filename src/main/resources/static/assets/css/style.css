@@ -1,0 +1,353 @@
+@charset "UTF-8";
+@font-face {
+    font-family: 'NanumSquareNeo-Variable';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+	
+	* {
+	    margin: 0;
+	    padding: 0;
+	    box-sizing: border-box;
+	    font-family: 'NanumSquareNeo-Variable';
+		font-family: 'NanumSquareNeo-Variable';
+		}
+		
+	body {
+	    background: url('../images/bg.jpg') no-repeat center;
+	    background-size: cover;
+	    min-height: 100vh;
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	}
+		
+	.logo{
+		text-align: center;
+	}
+	
+	/*form*/
+	.form {
+	    width: calc(100% - 20px);
+	    max-width: 500px;
+	    background-color: #fff;
+	    padding: 50px 40px;
+	}
+	
+	.form h1 {
+	    text-align: center;
+	    margin: 10px 0;
+	    font-size: 3rem;
+	    color: #111;
+	}
+	
+	.form a {
+	    display: block;
+	    text-align: center;
+	    text-decoration: none;
+	    font-size: 1.1rem;
+	    color: #2D3457;
+	    text-transform: uppercase;
+	    font-weight: 600;
+	    margin-bottom: 8px;
+	    transition: .2s linear;
+	}
+	
+	.form a:hover {
+	    color: #111;
+	}
+	
+	
+	/*text 입력 부분*/
+	.textb {
+	    margin-bottom: 12px;
+	    position: relative;
+	}
+	
+	.textb input {
+	    width: 100%;
+	    height: 70px;
+	    border: none;
+	    background-color: white;
+	    border: 1px solid #B2B2B2;
+	    border-radius: 4px;
+	    color: #333;
+	    font-size: 1.0rem;
+	    font-weight: 700;
+	    padding: 14px 60px 0 10px;
+	}
+	
+	.placeholder {
+	    font-size: 1.0rem;
+	    font-weight: 700;
+	    position: absolute;
+	    line-height: 70px;
+	    top: 0;
+	    left: 20px;
+	    color: #9d9d9d;
+	    user-select: none;
+	    pointer-events: none;
+	}
+	
+	.textb input:focus ~ .placeholder,
+	.textb input:valid ~ .placeholder {
+	    left: 10px;
+	    top: -10px;
+	}
+	
+	.textc {
+	    margin-bottom: 12px;
+	    position: relative;
+	}
+	
+	.textc input {
+	    width: 70%;
+	    height: 70px;
+	    border: none;
+	    background-color: white;
+	    border: 1px solid #B2B2B2;
+	    border-radius: 4px;
+	    color: #333;
+	    font-size: 1.0rem;
+	    font-weight: 700;
+	    padding: 14px 60px 0 10px;
+	}
+	
+	.placeholder_2 {
+	    font-size: 1.0rem;
+	    font-weight: 700;
+	    position: absolute;
+	    line-height: 70px;
+	    top: 0;
+	    left: 20px;
+	    color: #9d9d9d;
+	    user-select: none;
+	    pointer-events: none;
+	    width: 100%
+	}
+	
+	.textc input:focus ~ .placeholder_2,
+	.textc input:valid ~ .placeholder_2 {
+	    left: 10px;
+	    top: -10px;
+	}
+	
+	/*사업자 등록 페이지 블럭처리 부분*/
+	.texta {
+	    margin-bottom: 12px;
+	    position: relative;
+	}
+	
+	.texta input {
+	    width: 100%;
+	    height: 70px;
+	    border: none;
+	    background-color: #ededed;
+	    border-radius: 4px;
+	    color: #333;
+	    font-size: 1.0rem;
+	    font-weight: 700;
+	    padding: 14px 60px 0 10px;
+	}
+	
+	
+	/*버튼*/
+	.show-password {
+	    position: absolute;
+	    right: 20px;
+	    line-height: 70px;
+	    color: #9d9d9d;
+	    font-size: 1.3rem;
+	}
+	.find-btn{
+		text-align: center;
+	}
+	.snsloginbtn{
+		display :inline-block;
+		text-align: center;
+	}
+
+	.btn {
+	    width: 70%;
+	    height: 70px;
+	    margin: 10px auto;
+	    background-color: transparent; 
+	    color: #FD9F28;
+	    /* background-color: #bc252a;
+	    color: #fff; */
+	    font-size: 1rem;
+	    border: 2px solid #FD9F28;
+	    border-radius: 20px;
+	    transition: .3s linear;
+	    font-family: 'NanumSquareNeo-Variable';
+	}
+	.btn:hover {
+	    opacity: .85;
+	    background-color: #FD9F28;
+	    color: white; 
+	}
+	.btn:disabled {
+	    background-color: transparent;
+	    color: #ddd;
+	    border: 2px solid;
+	}
+	.btn_2{
+		width: 20%;
+	    height: 50px;
+	    margin: 10px auto;
+	    background-color: transparent; 
+	    color: #FD9F28;
+	    /* background-color: #bc252a;
+	    color: #fff; */
+	    font-size: 1rem;
+	    border: 2px solid #FD9F28;
+	    border-radius: 20px;
+	    transition: .3s linear;
+	    font-family: 'NanumSquareNeo-Variable';
+	}
+	.btn_2:hover {
+	    opacity: .85;
+	    background-color: #FD9F28;
+	    color: white;
+	}
+	.btn_3 {
+	    width: 49%;
+	    height: 70px;
+	    margin: 10px auto;
+	    background-color: transparent; 
+	    color: #FD9F28;
+	    /* background-color: #bc252a;
+	    color: #fff; */
+	    font-size: 1rem;
+	    border: 2px solid #FD9F28;
+	    border-radius: 20px;
+	    transition: .3s linear;
+	    font-family: 'NanumSquareNeo-Variable';
+	}
+	.btn_3:hover {
+	    opacity: .85;
+	    background-color: #FD9F28;
+	    color: white; 
+	}
+	.btn_3:disabled {
+	    background-color: transparent;
+	    color: #ddd;
+	    border: 2px solid;
+	}
+	.cancelBtn {
+		width: 50px;
+	    height: 50px;
+	    margin-top: 5px auto;
+	    margin-bottom: 10px;
+	    margin-left: 200px;
+	    background-color: transparent; 
+	    color: #FD9F28;
+	    /* background-color: #bc252a;
+	    color: #fff; */
+	    font-size: 1rem;
+	    border: 2px solid #FD9F28;
+	    border-radius: 20px;
+	    transition: .3s linear;
+	    font-family: 'NanumSquareNeo-Variable';
+	}
+	.cancelBtn:hover {
+	    opacity: .85;
+	    background-color: #FD9F28;
+	    color: white; 
+	}
+	.cancelBtn:disabled {
+	    background-color: transparent;
+	    color: #ddd;
+	    border: 2px solid;
+	}
+	.storeBtn {
+	    width: 110px;
+	    height: 60px;
+	    background-color: transparent; 
+	    color: #FD9F28;
+	    vertical-align:middle;
+	    margin-top:-15px;
+	    margin-left: 5px;
+	    /* background-color: #bc252a;
+	    color: #fff; */
+	    font-size: 1rem;
+	    border: 2px solid #FD9F28;
+	    border-radius: 20px;
+	    transition: .3s linear;
+	    font-family: 'NanumSquareNeo-Variable';
+	}
+	.storeBtn:hover {
+	    opacity: .85;
+	    background-color: #FD9F28;
+	    color: white; 
+	}
+	.storeBtn:disabled {
+	    background-color: transparent;
+	    color: #ddd;
+	    border: 2px solid;
+	}
+	
+	/*고객, 사업자 나누는 부분 및 라디오 버튼*/
+	.divisionCO {
+		text-align: center;
+	}
+	.radio{
+		display : inline-block;
+		text-align: center;
+		width: 45%;
+		height: 80px;
+		font-size: 15px;
+		font-family: 'NanumSquareNeo-Variable';
+		font-family: 'NanumSquareNeo-Variable';
+		
+	}
+	.agreeradio{
+		width: 100%;
+		text-align: center;
+		font-size: 15px;
+		font-family: 'NanumSquareNeo-Variable';
+		font-family: 'NanumSquareNeo-Variable';
+	}
+	input, progress {
+  		accent-color: #2D3457;
+	}
+	
+	.title{
+		text-align: center;
+		font-size: 30px;
+		font-family: 'NanumSquareNeo-Variable';
+	}
+	
+	.btn-custom{
+		width:150px;
+		border: 2px solid #FD9F28;
+	}
+	
+	.btn-success{
+	border: 2px solid #FD9F28;
+	color: #FD9F28 !important;
+	width: 150px;
+	}
+	.btn-danger{
+		border: 2px solid #FD9F28;
+		color: #FD9F28 !important;
+		margin: 10px;
+		width: 150px;
+	}
+	
+	.btn-success:hover{
+		background-color: #FD9F28;
+		color: white !important;
+	}
+	.btn-danger:hover{
+		background-color: #FD9F28;
+		color: white !important;
+	}
+	
+		
+	
+		
+	
+	
+	

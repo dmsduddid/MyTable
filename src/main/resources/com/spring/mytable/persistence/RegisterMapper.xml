@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    <mapper namespace="com.spring.mytable.persistence.RegisterMapper">
+    
+    	<!-- 고객이 대기 등록 했을 때 -->
+    	<insert id = "updateWaiting">
+	    	<selectKey keyProperty="register_seq_no" order="BEFORE" resultType = "int">
+	    			SELECT register_seq_no.nextval FROM dual
+	    	</selectKey>
+	    	<![CDATA[
+	    		INSERT INTO register
+	        				VALUES(#{register_seq_no}
+	        						, #{business_no}
+	        						, (SELECT business_name FROM business WHERE business_no = #{business_no})
+	        						, #{customer_id}
+	        						, #{people_num}
+	        						, default
+	        						, default)
+	    		]]>
+    	</insert>
+    	
+    	<!-- 중복 대기 등록 불가 -->
+    	<select id="countRegisterList" resultType = "int">
+    	<![CDATA[
+	    		SELECT COUNT(*) FROM register
+	    				WHERE customer_id = #{customer_id}
+         ]]>
+    	</select>
+    	
+    	
+    	<!-- 고객이 직접 대기 등록 취소 했을 때 -->
+    	<update id="deleteWaiting">
+	    		UPDATE register
+	        			SET use_yn = 'C'
+	       				WHERE customer_id = #{customer_id}
+    	</update>
+    	
+    	<!-- use_yn = N 또는 C로 변경되었을 때 history테이블로 이동 -->
+    	<insert id="moveToHistory">
+    	<![CDATA[
+    		INSERT 
+		    WHEN customer_id = #{customer_id} THEN
+		    INTO history ( business_no
+		                    , customer_id
+		                    , people_num
+		                    , use_yn)
+		    VALUES (business_no
+		            , customer_id
+		            , people_num
+		            , use_yn)
+		    SELECT business_no
+		    		, customer_id
+		    		, people_num
+		    		, use_yn 
+		    		FROM register
+		]]>
+    	</insert>
+    	
+    	<!-- history테이블로 이동하면 register테이블에서 삭제 -->
+    	<delete id="deleteFromRegister">
+    	<![CDATA[
+    		DELETE FROM register
+    			WHERE customer_id = #{customer_id}
+    	]]>
+    	</delete>
+    	
+    	<!-- 대기번호 카운팅 -->
+    	<select id="countWaitingNum" resultType = "int">
+    	<![CDATA[
+	    		SELECT COUNT(business_no) 
+	    				FROM register
+	         			WHERE register_seq_no <(SELECT register_seq_no 
+	         											FROM register 
+	                                                    WHERE customer_id = #{customer_id})
+	         			AND
+	         			business_no = (SELECT business_no 
+	         									FROM register 
+	         									WHERE customer_id = #{customer_id})
+	        			AND 
+	        			use_yn = 'Y'
+         ]]>
+    	</select>
+    	
+    	<!-- 가게 이름 출력 -->
+    	<select id="selectRegisterList" resultType = "com.spring.mytable.domain.RegisterDTO">
+    	<![CDATA[
+	    		SELECT business_name, people_num
+	    				FROM register
+	    				WHERE customer_id = #{customer_id}
+         ]]>
+    	</select>
+    
+    	
+    	<!-- 입장 메세지 발송 -->
+    	<update id="sendEnteringMsg">
+    		<![CDATA[
+  				UPDATE register
+  						SET use_yn = 'N'
+  						WHERE customer_id = #{customer_id}
+    		]]>
+    	</update>
+    	
+    	<!-- 대기 인원 수 카운팅 -->
+		<select id="countWaitingPeopleNum" resultType = "int">
+			<![CDATA[
+    			SELECT count(customer_id)
+    					FROM register
+    					WHERE business_no = #{business_no}
+    		]]>
+		</select>
+		
+		<!-- 취소 인원 수 카운팅 -->
+		<select id="countCancelPeopleNum" resultType = "int">
+			<![CDATA[
+    			SELECT count(customer_id)
+    					FROM history
+    					WHERE use_yn = 'C'
+    					AND to_char(Entering_time, 'YY/MM/DD') = to_char(sysdate, 'YY/MM/DD')
+    					AND business_no = #{business_no}
+    		]]>
+		</select>
+    	
+    	<!-- 입장 완료 인원 수 카운팅 -->
+		<select id="countEnteringPeopleNum" resultType = "int">
+			<![CDATA[
+    			SELECT count(customer_id)
+    					FROM history
+    					WHERE use_yn = 'N'
+    					AND to_char(Entering_time, 'YY/MM/DD') = to_char(sysdate, 'YY/MM/DD')
+    					AND business_no = #{business_no}
+    		]]>
+		</select>
+		
+		<select id = "selectList" resultType = "com.spring.mytable.domain.RegisterDTO">
+    		SELECT * FROM register 
+    				WHERE business_no = ${business_no}
+    				ORDER BY register_seq_no ASC
+    	</select>
+    	
+    	<select id = "selectHistoryList" resultType = "com.spring.mytable.domain.RegisterDTO">
+    		SELECT customer_id
+    			   , people_num
+    			   , entering_time 
+    			FROM history 
+    			WHERE business_no = #{business_no}
+    	</select>
+    	
+    	<select id = "selectBusiness_no" resultType = "int">
+    		SELECT business_no FROM business WHERE owner_id = #{user_id} 
+    	</select>
+    	
+    </mapper>
